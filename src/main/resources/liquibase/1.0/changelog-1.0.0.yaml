@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create mattress table
+      author: Zaur Mursalov
+      changes:
+        - createTable:
+            tableName: mattress
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal
+                  constraints:
+                    nullable: false
+
+
+
+            remarks: Table to store information about mattress

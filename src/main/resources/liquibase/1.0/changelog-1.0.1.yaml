@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create comment table
+      author: Zaur Mursalov
+      changes:
+        - createTable:
+            tableName: comment
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: comment
+                  type: text
+                  constraints:
+                    nullable: false
+
+
+
+            remarks: Table to store information about comment

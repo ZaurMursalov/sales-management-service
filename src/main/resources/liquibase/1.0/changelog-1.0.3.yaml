@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create user_permissions table
+      author: Zaur Mursalov
+      changes:
+        - createTable:
+            tableName: user_permissions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: permissions_name
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: text
+                  constraints:
+                    nullable: false
+
+
+
+            remarks: Table to store information about user_permissions
