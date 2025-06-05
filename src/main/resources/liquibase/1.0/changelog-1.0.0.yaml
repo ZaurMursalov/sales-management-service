@@ -1,28 +1,32 @@
 databaseChangeLog:
   - changeSet:
-      id: Create mattress table
+      id: Create users table
       author: Zaur Mursalov
       changes:
         - createTable:
-            tableName: mattress
+            tableName: users
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
-                  name: name
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: username
+                  type: VARCHAR(100)
               - column:
-                  name: price
-                  type: decimal
-                  constraints:
-                    nullable: false
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(20)
+              - column:
+                  name: role
+                  type: VARCHAR(20)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
 
 
 

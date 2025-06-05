@@ -1,34 +1,33 @@
 databaseChangeLog:
   - changeSet:
-      id: Create user_permissions table
+      id: Create product_attributes table
       author: Zaur Mursalov
       changes:
         - createTable:
-            tableName: user_permissions
+            tableName: product_attributes
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
-                  name: user_id
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: key
+                  type: VARCHAR(100)
               - column:
-                  name: permissions_name
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: value
+                  type: VARCHAR(255)
               - column:
-                  name: product_name
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: product_id
+                  type: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: product_attributes
+            baseColumnNames: product_id
+            constraintName: fk_attribute_product
+            referencedTableName: products
+            referencedColumnNames: id
 
 
-
-            remarks: Table to store information about user_permissions
+            remarks: Table to store information about product_attributes
