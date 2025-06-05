@@ -1,29 +1,52 @@
 databaseChangeLog:
   - changeSet:
-      id: Create mattress_details table
+      id: Create products table
       author: Zaur Mursalov
       changes:
         - createTable:
-            tableName: mattress_details
+            tableName: products
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
-                  name: created_on
-                  type: TIMESTAMP(6)
-                  constraints:
-                    nullable: false
+                  name: title
+                  type: VARCHAR(255)
               - column:
-                  name: created_by
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: description
+                  type: TEXT
+              - column:
+                  name: price
+                  type: DECIMAL(10,2)
+              - column:
+                  name: location
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: category_id
+                  type: BIGINT
+              - column:
+                  name: owner_id
+                  type: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: category_id
+            constraintName: fk_products_category
+            referencedTableName: categories
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: owner_id
+            constraintName: fk_products_owner
+            referencedTableName: users
+            referencedColumnNames: id
 
 
-
-            remarks: Table to store information about mattress_details
+            remarks: Table to store information about products

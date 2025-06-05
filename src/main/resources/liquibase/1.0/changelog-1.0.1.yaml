@@ -1,24 +1,20 @@
 databaseChangeLog:
   - changeSet:
-      id: Create comment table
+      id: Create categories table
       author: Zaur Mursalov
       changes:
         - createTable:
-            tableName: comment
+            tableName: categories
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
-                  name: comment
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: name
+                  type: VARCHAR(100)
 
 
-
-            remarks: Table to store information about comment
+            remarks: Table to store information about categories
