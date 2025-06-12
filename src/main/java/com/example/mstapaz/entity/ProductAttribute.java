@@ -11,8 +11,8 @@ public class ProductAttribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String key; // məsələn: "ölçü", "material"
-    private String value; // məsələn: "200x160", "pamuk"
+    private String key;
+    private String value;
 
     @ManyToOne
     private ProductEntity product;

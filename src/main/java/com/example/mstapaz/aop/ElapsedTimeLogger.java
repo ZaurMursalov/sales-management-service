@@ -16,9 +16,9 @@ import java.util.Arrays;
 @Slf4j
 public class ElapsedTimeLogger {
 
-    @Pointcut(value = "execution(* com.example.mstapaz.service.MattService.*(..))")
-    public void elapsedTimePc(){
-    }
+//    @Pointcut(value = "execution(* com.example.mstapaz.service.MattService.*(..))")
+//    public void elapsedTimePc(){
+//    }
 
 
     @SneakyThrows
@@ -31,14 +31,14 @@ public class ElapsedTimeLogger {
 
     }
 
-    @Before(value = "elapsedTimePc()")
-    public void elapsedTimeLogger(JoinPoint joinPoint){
-        Arrays.stream(
-                joinPoint.getArgs()).forEach(arg->log.info("All methods : {}",arg));
-
-        log.info("Aop started");
-
-    }
+//    @Before(value = "elapsedTimePc()")
+//    public void elapsedTimeLogger(JoinPoint joinPoint){
+//        Arrays.stream(
+//                joinPoint.getArgs()).forEach(arg->log.info("All methods : {}",arg));
+//
+//        log.info("Aop started");
+//
+//    }
 
 
 
