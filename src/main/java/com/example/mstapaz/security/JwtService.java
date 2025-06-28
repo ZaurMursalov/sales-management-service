@@ -6,24 +6,33 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 saat
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final JwtProperties jwtProperties;
 
-    public String generateToken(UserEntity user) {
+    public String generateAccessToken(UserEntity user) {
+        return generateToken(user, jwtProperties.getAccessTokenExpirationMs());
+    }
+
+    public String generateRefreshToken(UserEntity user) {
+        return generateToken(user, jwtProperties.getRefreshTokenExpirationMs());
+    }
+
+    private String generateToken(UserEntity user, long expiration) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -32,17 +41,29 @@ public class JwtService {
     }
 
     public boolean isValid(String token, UserEntity user) {
-        return extractUsername(token).equals(user.getUsername()) && !isExpired(token);
+        return extractUsername(token).equals(user.getUsername()) && isExpired(token);
+    }
+
+    public boolean isValid(String token) {
+        try {
+            return isExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private boolean isExpired(String token) {
-        return parseToken(token).getBody().getExpiration().before(new Date());
+        return !parseToken(token).getBody().getExpiration().before(new Date());
     }
 
     private Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token);
+    }
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 }

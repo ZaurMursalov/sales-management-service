@@ -57,6 +57,9 @@ dependencies {
 
     // Spring Boot Starter Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

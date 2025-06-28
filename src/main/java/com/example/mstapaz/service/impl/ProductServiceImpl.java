@@ -12,6 +12,8 @@ import com.example.mstapaz.repository.ProductRepository;
 import com.example.mstapaz.repository.UserRepository;
 import com.example.mstapaz.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public abstract class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
@@ -55,6 +57,43 @@ public abstract class ProductServiceImpl implements ProductService {
         return ProductMapper.mapToResponse(saved);
 
 
+    }
+
+    @Override
+    public List<ProductResponse> getAll() {
+        List<ProductEntity> products = productRepository.findAll();
+        return products.stream().map(ProductMapper::mapToResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductResponse getById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<ProductResponse> getMyProducts(String username) {
+        List<ProductEntity> products = productRepository.findAllByOwnerUsername(username);
+
+        return products.stream().map(ProductMapper::mapToResponse).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        var product = fetchExists(id);
+
+        if (!product.getOwner().getUsername().equals(currentUsername)) {
+            throw new AccessDeniedException("You can delete only your own products");
+        }
+        productRepository.delete(product);
+
+    }
+
+
+    private ProductEntity fetchExists(Long id) {
+        return productRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Product not found"));
     }
 
     // digər metodlar da əlavə ediləcək (getAll, getById, getMyProducts, deleteProduct)

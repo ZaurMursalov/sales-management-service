@@ -7,5 +7,6 @@ import com.example.mstapaz.security.JwtResponse;
 public interface UserService {
     void register(UserRegisterRequest request);
     JwtResponse login(UserLoginRequest request);
+    JwtResponse refreshAccessToken(String refreshToken);
 }
 

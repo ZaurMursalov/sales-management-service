@@ -13,9 +13,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void saveCategory(String name) {
-        var category=fetchExists(name);
-        category.setName(name);
-        categoryRepository.save(category);
+        CategoryEntity categoryEntity = CategoryEntity.builder()
+                .name(name)
+                .build();
+        categoryRepository.save(categoryEntity);
     }
 
     @Override
